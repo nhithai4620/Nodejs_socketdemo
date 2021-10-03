@@ -9,14 +9,12 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="socket.io/socket.io.js"></script>
-  <script>
-      var socket = io("http://localhost:5000");
-  </script>
+
 </head>
 <body>
   <div class="container">
     <h2>Thông tin sinh viên</h2>
-    <form action="http://localhost:5000/api/submit" method="post">
+    <form method="POST" id="myForm" action="javascript:void(0);">
       <div class="form-group">
         <label for="mssv">MSSV</label>
         <input type="text" class="form-control" id="mssv" placeholder="Enter email" name="mssv">
@@ -45,12 +43,22 @@
           <label for="adress">Xã phường:</label>
           <input type="text" class="form-control" id="xaphuong" placeholder="Enter password" name="xaphuong">
       </div>
-      <button type="submit" class="btn btn-default">Submit</button>
+      <button id="submit" class="btn btn-default">Submit</button>
     </form>
   </div>
   <script>
+      var socket = io("http://localhost:5000");
       $(document).ready(function(){
-        //   alert("Helle jquery");
+        
+
+
+        $("#submit").click(function(){
+            let myForm = document.getElementById('myForm');
+            let formData = new FormData(myForm);
+            console.log(formData);
+            socket.emit("Client-send-data",formData);
+        })
+        
       })
   </script>
 </body>

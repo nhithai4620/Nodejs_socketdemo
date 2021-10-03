@@ -17,6 +17,10 @@ io.on("connection",function(socket){
     socket.on("disconnect", function(){
         console.log("Người dùng : " + socket.id + " đã ngắt kết nối!!!!")
     })
+
+    socket.on("Client-send-data",function(data){
+        console.log(data);
+    })
 });
 
 app.get("/", function(req,res){
