@@ -12,7 +12,11 @@ server.listen(5000,function(){
 })
 
 io.on("connection",function(socket){
-    console.log("Co nguoi dang ket noi" + socket.id);
+    console.log("Có người đã kết nối" + socket.id);
+
+    socket.on("disconnect", function(){
+        console.log(socket.id + "đã ngắt kết nối!!!!")
+    })
 });
 
 app.get("/", function(req,res){
