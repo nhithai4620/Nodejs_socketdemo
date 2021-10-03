@@ -12,7 +12,7 @@ server.listen(5000,function(){
 })
 
 io.on("connection",function(socket){
-    console.log("co nguoi ket noi");
+    console.log("co nguoi ket noi" + socket.id);
 });
 
 app.get("/", function(req,res){
