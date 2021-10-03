@@ -51,8 +51,9 @@
       $(document).ready(function(){
         
         $( "form" ).on( "submit", function(e) {       
-            var data = JSON.stringify( $(this).serialize());
-            console.log( data );
+            var formData = JSON.parse(JSON.stringify(jQuery($(this)).serializeArray()))
+            console.log(formData);
+            socket.emit("Client-send-data", formData);
         });
       })
   </script>
