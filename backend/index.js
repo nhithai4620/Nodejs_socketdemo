@@ -12,10 +12,10 @@ server.listen(5000,function(){
 })
 
 io.on("connection",function(socket){
-    console.log("Có người đã kết nối " + socket.id);
+    console.log("Có người đã kết nối :" + socket.id);
 
     socket.on("disconnect", function(){
-        console.log(socket.id + " đã ngắt kết nối!!!!")
+        console.log("Người dùng : " + socket.id + " đã ngắt kết nối!!!!")
     })
 });
 
