@@ -11,6 +11,25 @@ server.listen(5000,function(){
     console.log('Node server runing @http://localhost:5000');
 })
 
+var mysql = require("mysql");
+
+var con = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  password: "",
+  database: "student",
+  port: "3307"
+});
+
+con.connect(function(err){
+  if(err){
+    console.log('Error connecting to Db');
+    return;
+  }
+  console.log('Connection established');
+});
+
+
 io.on("connection",function(socket){
     console.log("Có người đã kết nối :" + socket.id);
 
@@ -20,10 +39,30 @@ io.on("connection",function(socket){
 
     socket.on("Client-send-data",function(data){
         console.log(data);
+        var sql = 'insert into customer(ctm_name,ctm_sex,ctm_birth,ctm_point,ctm_account,ctm_password)  value(?,?,?,?,?,?);';
+        var user = req.body;
+        var values = [user.name, user.sex,user.birth,user.point,user.account,user.password];
+        if (user){
+            con.query(sql,values, function(error, results) {
+                if (error)	{
+                    res.send('false');
+                    throw error;
+                }
+                else {
+                    res.send('success');
+                }
+                res.end();
+            });
+        } else {
+            res.send('Please enter Username and Password!');
+            res.end();
+        }  
     })
 });
 
 app.get("/", function(req,res){
     res.render("trangchu");
 })
+
+
 
