@@ -38,25 +38,30 @@ io.on("connection",function(socket){
     })
 
     socket.on("Client-send-data",function(data){
-        console.log(data);
-        var sql = 'insert into customer(ctm_name,ctm_sex,ctm_birth,ctm_point,ctm_account,ctm_password)  value(?,?,?,?,?,?);';
-        var user = req.body;
-        var values = [user.name, user.sex,user.birth,user.point,user.account,user.password];
-        if (user){
-            con.query(sql,values, function(error, results) {
-                if (error)	{
-                    res.send('false');
-                    throw error;
-                }
-                else {
-                    res.send('success');
-                }
-                res.end();
-            });
-        } else {
-            res.send('Please enter Username and Password!');
-            res.end();
-        }  
+        var sql = 'insert into infor(ID,Name,Birth,Email,PhoneNumber,Province,Wards)  value(?,?,?,?,?,?,?);';
+        var studentInfor = [];
+        data.forEach(element => {
+            studentInfor.push(element.name + " " + element.value);
+        });
+        console.log(studentInfor);
+        // var sql = 'insert into customer(ctm_name,ctm_sex,ctm_birth,ctm_point,ctm_account,ctm_password)  value(?,?,?,?,?,?);';
+        // var user = req.body;
+        // var values = [user.name, user.sex,user.birth,user.point,user.account,user.password];
+        // if (user){
+        //     con.query(sql,values, function(error, results) {
+        //         if (error)	{
+        //             res.send('false');
+        //             throw error;
+        //         }
+        //         else {
+        //             res.send('success');
+        //         }
+        //         res.end();
+        //     });
+        // } else {
+        //     res.send('Please enter Username and Password!');
+        //     res.end();
+        // }  
     })
 });
 
