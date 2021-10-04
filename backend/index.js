@@ -33,14 +33,13 @@ con.connect(function(err){
 io.on("connection",function(socket){
     console.log("Có người đã kết nối :" + socket.id);
 
-    var bill = [];
+    var liststudent = [];
     var sql = "select * from infor";
     con.query(sql,function(err,results){
         if (err) throw err;
-        bill = results;
-        io.sockets.emit("Server-send-data",bill);
+        liststudent = results;
+        io.sockets.emit("Server-send-data",liststudent);
     });  
-
 
     socket.on("disconnect", function(){
         console.log("Người dùng : " + socket.id + " đã ngắt kết nối!!!!")

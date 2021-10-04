@@ -14,7 +14,7 @@
 <body>
   <div class="container">
     <h2 class="ection-heading text-center">Thông tin sinh viên</h2>
-    <form  name="myForm" action="javascript:void(0);">
+    <form  name="myForm" action="">
       <div class="form-group">
         <label for="mssv">MSSV</label>
         <input type="text" class="form-control" id="mssv" placeholder="Enter mssv" name="ID">
@@ -47,6 +47,7 @@
     </form>
     <div>
       <h2 class="ection-heading text-center">Danh sách sinh viên</h2>
+      <input id="myInput" type="text" placeholder="Search..">
       <table id="contacts" class="table table-bordered table-responsive table-striped">
           <thead>
               <tr>
@@ -59,33 +60,47 @@
                   <th>Xã phường</th>
               </tr>
           </thead>
-          <tbody>
-  
-                  <tr>
-                  <td>1</td>
-                  <td>2</td>
-                  <td>3</td>
-                  <td>4</td>
-                  <td>5</td>
-                  <td>6</td>
-                  <td>7</td>
-                  </tr>
+          <tbody id ="list-student">
+              <!-- data append here -->
           </tbody>
         </table>
     </div>
   </div>
+  <script src="https://momentjs.com/downloads/moment.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script>
-    
       var socket = io("http://localhost:5000");
       socket.on("Server-send-data",function(data){
-        alert(data);
+        console.log(data);
+        data.forEach(element => {
+          $("#list-student").append(`
+              <tr>
+                  <td>${element.ID}</td>
+                  <td>${element.Name}</td>
+                  <td>${moment(element.Birth).format("YYYY-MM-DD")}</td>
+                  <td>${element.Email}</td>
+                  <td>${element.PhoneNumber}</td>
+                  <td>${element.Province}</td>
+                  <td>${element.Wards}</td>
+              </tr>
+          `)
+        });
       })
+
+      // socket get data from database
 
       $(document).ready(function(){
         $( "form" ).on( "submit", function(e) {       
             var formData = JSON.parse(JSON.stringify(jQuery($(this)).serializeArray()))
             console.log(formData);
             socket.emit("Client-send-data", formData);
+        });
+        //send data to server
+        $("#myInput").on("keyup", function() {
+          var value = $(this).val().toLowerCase();
+          $("#list-student tr").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+          });
         });
       })
   </script>
