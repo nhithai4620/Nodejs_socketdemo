@@ -33,6 +33,15 @@ con.connect(function(err){
 io.on("connection",function(socket){
     console.log("Có người đã kết nối :" + socket.id);
 
+    var bill = [];
+    var sql = "select * from infor";
+    con.query(sql,function(err,results){
+        if (err) throw err;
+        bill = results;
+        io.sockets.emit("Server-send-data",bill);
+    });  
+
+
     socket.on("disconnect", function(){
         console.log("Người dùng : " + socket.id + " đã ngắt kết nối!!!!")
     })
@@ -43,19 +52,19 @@ io.on("connection",function(socket){
         data.forEach(element => {
             studentInfor[element.name] =  element.value;
         });
-        console.log(studentInfor);
+      
         var values = [studentInfor.ID, studentInfor.Name,studentInfor.Birth,studentInfor.Email,studentInfor.PhoneNumber,studentInfor.Province,studentInfor.Wards];
         if (studentInfor){
             con.query(sql,values, function(error, results) {
                 if (error)	{
-                    console.log("fail")
+                    console.log("fail");
                     throw error;
                 }
                 else {
-                    console.log("success")
+                    console.log("success");
                 }
             });
-        }
+        }     
     })
 });
 

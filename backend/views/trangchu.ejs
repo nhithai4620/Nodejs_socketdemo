@@ -75,9 +75,13 @@
     </div>
   </div>
   <script>
+    
       var socket = io("http://localhost:5000");
+      socket.on("Server-send-data",function(data){
+        alert(data);
+      })
+
       $(document).ready(function(){
-        
         $( "form" ).on( "submit", function(e) {       
             var formData = JSON.parse(JSON.stringify(jQuery($(this)).serializeArray()))
             console.log(formData);
